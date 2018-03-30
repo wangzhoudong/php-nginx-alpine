@@ -61,7 +61,9 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
 
 
 # Configure nginx
+RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY config/site-default.conf /etc/nginx/conf.d/default.conf
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php7/php-fpm.d/zzz_custom.conf
