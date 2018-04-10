@@ -46,6 +46,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-mbstring \
     php7-session \
     php7-phar && \
+    php7-opcache && \
     curl -sS https://getcomposer.org/installer | \
     php7 -- --install-dir=/usr/bin --filename=composer && \
     sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php7/php-fpm.conf && \
@@ -59,6 +60,8 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
+COPY lib/phpunit.phar /usr/local/bin/phpunit
+RUN chmod +x /usr/local/bin/phpunit
 
 # Configure nginx
 RUN rm -rf /etc/nginx/conf.d/default.conf
