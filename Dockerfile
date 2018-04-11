@@ -45,9 +45,9 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-fpm \
     php7-mbstring \
     php7-simplexml \
+    php7-opcache \
     php7-session \
     php7-phar && \
-    php7-opcache && \
     curl -sS https://getcomposer.org/installer | \
     php7 -- --install-dir=/usr/bin --filename=composer && \
     sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php7/php-fpm.conf && \
