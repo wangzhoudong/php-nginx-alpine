@@ -9,7 +9,7 @@ ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
 
 #安装基础服务
-RUN apk --no-cache add supervisor nginx curl tzdata ;
+RUN apk --no-cache add git supervisor nginx curl tzdata ;
 
 
 #安装PHP
@@ -38,6 +38,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-gettext \
     php7-xmlreader \
     php7-xmlrpc \
+    php7-xmlwriter \
     php7-bz2 \
     php7-iconv \
     php7-curl \
