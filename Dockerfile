@@ -9,7 +9,7 @@ ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
 
 #安装基础服务
-RUN apk --no-cache add git supervisor nginx curl tzdata ;
+RUN apk --no-cache add git vim supervisor nginx curl tzdata ;
 
 
 #安装PHP
