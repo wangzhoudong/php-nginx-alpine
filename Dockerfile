@@ -48,6 +48,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-simplexml \
     php7-opcache \
     php7-session \
+    php7-pcntl \
     php7-phar && \
     curl -sS https://getcomposer.org/installer | \
     php7 -- --install-dir=/usr/bin --filename=composer && \

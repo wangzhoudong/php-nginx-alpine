@@ -4,6 +4,10 @@ python:
 
 services:
   - docker
+env:
+    global:
+        - COMMIT=${TRAVIS_COMMIT::8}
+        - REPO=dongen/alpine-php-nginx
 
 install:
   - docker build -t php .
@@ -13,4 +17,7 @@ script:
   - docker ps
   - sleep 5
   - curl -I 127.0.0.1:80
+  - docker --version
+  - export TAG="latest"
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
 #  - python .travis/tests.py
