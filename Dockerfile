@@ -66,7 +66,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
 
 COPY lib/phpunit.phar /usr/local/bin/phpunit
 RUN chmod +x /usr/local/bin/phpunit
-
+RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 # Configure nginx
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY config/nginx.conf /etc/nginx/nginx.conf
