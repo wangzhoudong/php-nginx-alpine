@@ -1,6 +1,6 @@
 FROM alpine:3.6
 LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
-      Description="Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux."
+      Description="Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux. "
 
 ENV TIMEZONE Asia/Shanghai
 ENV PHP_MEMORY_LIMIT 512M
