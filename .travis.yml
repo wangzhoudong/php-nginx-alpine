@@ -18,7 +18,7 @@ script:
   - sleep 5
   - curl -I 127.0.0.1:80
   - docker --version
-  - export TAG="latest"
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker push $REPO
