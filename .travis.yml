@@ -20,4 +20,6 @@ script:
   - docker --version
   - export TAG="latest"
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker push $REPO
 #  - python .travis/tests.py
