@@ -22,6 +22,8 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-common \
     php7-intl \
     php7-gd \
+    php7-imagick \
+    php7-xdebug \
     php7-tokenizer \
     php7-fileinfo \
     php7-mcrypt \
