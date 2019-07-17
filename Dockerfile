@@ -1,6 +1,6 @@
 FROM alpine:3.6
 LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
-      Description="Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux. "
+      Description="Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux.  "
 
 ENV TIMEZONE Asia/Shanghai
 ENV PHP_MEMORY_LIMIT 512M
@@ -68,7 +68,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
     sed -i "s/;opcache.enable=1/opcache.enable=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
     sed -i "s/;opcache.enable_cli=0/opcache.enable_cli=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
-    sed -i "s/;opcache.memory_consumption=128/;opcache.memory_consumption=${PHP_OPCACHE_MEMORY}/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=${PHP_OPCACHE_MEMORY}/" /etc/php7/php.ini && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
