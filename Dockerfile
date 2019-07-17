@@ -7,6 +7,8 @@ ENV PHP_MEMORY_LIMIT 512M
 ENV MAX_UPLOAD 50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
+ENV PHP_OPCACHE_ENABLE 1
+ENV PHP_OPCACHE_MEMORY 256
 
 #安装基础服务
 RUN apk --no-cache add git vim supervisor nginx curl tzdata ;
@@ -63,19 +65,22 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     sed -i "s|max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|" /etc/php7/php.ini && \
     sed -i "s|post_max_size =.*|post_max_size = ${PHP_MAX_POST}|" /etc/php7/php.ini && \
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.enable=1/opcache.enable=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.enable_cli=0/opcache.enable_cli=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.memory_consumption=128/;opcache.memory_consumption=${PHP_OPCACHE_MEMORY}/" /etc/php7/php.ini && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
 COPY lib/phpunit.phar /usr/local/bin/phpunit
 RUN chmod +x /usr/local/bin/phpunit
-RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 # Configure nginx
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/site-default.conf /etc/nginx/conf.d/default.conf
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php7/php-fpm.d/zzz_custom.conf
 COPY config/php.ini /etc/php7/conf.d/zzz_custom.ini
 
 # Configure supervisord
