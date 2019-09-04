@@ -7,11 +7,11 @@ services:
 env:
     global:
         - COMMIT=${TRAVIS_COMMIT::8}
-        - REPO=dongen/alpine-php-nginx
+        - REPO=dongen/php-nginx-alpine
 
 install:
   - docker build -t php .
-  - docker run -d -p 127.0.0.1:80:80 --name nginx-php-fpm php
+  - docker run -d -p 127.0.0.1:80:80 --name php-nginx-alpine php
 
 script:
   - docker ps
