@@ -6,12 +6,12 @@ Docker PHP-FPM 7.1 & Nginx 1.12 on Alpine Linux
 
 #使用1:
 
-    docker run -p 80:80 -d dongen/nginx-php-alpine
+    docker run -p 80:80 -d dongen/php-nginx-alpine
 #使用2 :
 
 >  禁用opcache
 ```
-docker run -e "PHP_OPCACHE_ENABLE=0" --name php -p 80:80 -d dongen/nginx-php-alpine
+docker run -e "PHP_OPCACHE_ENABLE=0" --name php -p 80:80 -d dongen/php-nginx-alpine
 ```
 #-e 参数 详情 :
 ```
@@ -28,5 +28,5 @@ PHP_OPCACHE_MEMORY   设置opcache.memory_consumption  -e "PHP_OPCACHE_MEMORY=25
 
 # 自定义php.ini
 ```
-docker run--name php -p 80:80 -v /local/php.ini:/etc/php7/php.ini -d dongen/nginx-php-alpine
+docker run--name php -p 80:80 -v /local/php.ini:/etc/php7/php.ini -d dongen/php-nginx-alpine
 ```
