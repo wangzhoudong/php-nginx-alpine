@@ -22,6 +22,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   apk  --no-cache add \
     php7 \
     php7-common \
+    php7-redis \
     php7-intl \
     php7-gd \
     php7-imagick \
