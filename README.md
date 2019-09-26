@@ -6,7 +6,15 @@ Docker PHP-FPM 7.1 & Nginx 1.12 on Alpine Linux
 
 #使用1:
 
-    docker run -p 80:80 -d dongen/php-nginx-alpine
+    docker run --name test-php -p 80:80 -d dongen/php-nginx-alpine
+    #阿里云同步仓库地址
+    docker run --name test-php  -p 80:80 -d registry.cn-beijing.aliyuncs.com/dongen/php-nginx-alpine
+##使用固定版本
+
+     docker run --name test-php -p 80:80 -d dongen/php-nginx-alpine:73
+     #阿里云同步仓库地址
+     docker run --name test-php  -p 80:80 -d registry.cn-beijing.aliyuncs.com/dongen/php-nginx-alpine:73
+
 #使用2 :
 
 >  禁用opcache
