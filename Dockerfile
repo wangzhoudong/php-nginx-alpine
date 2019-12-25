@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.11.2
 LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
       Description="Nginx 1.16 & PHP-FPM 7.3 based on Alpine Linux .  "
 
@@ -65,6 +65,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /etc/php7/php.ini && \
     sed -i "s|max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|" /etc/php7/php.ini && \
     sed -i "s|post_max_size =.*|post_max_size = ${PHP_MAX_POST}|" /etc/php7/php.ini && \
+    sed -i "s|expose_php =.*|expose_php = Off|" /etc/php7/php.ini && \
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
     sed -i "s/;opcache.enable=1/opcache.enable=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
