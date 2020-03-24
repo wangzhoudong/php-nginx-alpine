@@ -11,6 +11,7 @@ ENV PHP_OPCACHE_ENABLE 1
 ENV PHP_OPCACHE_MEMORY 256
 
 #安装基础服务
+RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk --no-cache add git vim supervisor nginx curl tzdata ;
 
 
@@ -55,6 +56,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-session \
     php7-pcntl \
     php7-posix \
+    php7-pecl-xlswriter \
     php7-phar && \
     curl -sS https://getcomposer.org/installer | \
     php7 -- --install-dir=/usr/bin --filename=composer && \
