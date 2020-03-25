@@ -12,7 +12,7 @@ ENV PHP_OPCACHE_MEMORY 256
 
 #安装基础服务
 RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-RUN apk --no-cache add supervisor nginx curl tzdata ;
+RUN apk --no-cache add git supervisor nginx curl tzdata ;
 
 
 #安装PHP
