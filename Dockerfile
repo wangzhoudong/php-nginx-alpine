@@ -9,6 +9,7 @@ ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
 ENV PHP_OPCACHE_ENABLE 1
 ENV PHP_OPCACHE_MEMORY 256
+ENV PHP_MAX_CHILDRENY 120
 
 #安装基础服务
 RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
@@ -62,6 +63,12 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7 -- --install-dir=/usr/bin --filename=composer && \
     sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php7/php-fpm.conf && \
     sed -i -e "s/listen\s*=\s*127.0.0.1:9000/listen = 9000/g" /etc/php7/php-fpm.d/www.conf && \
+    sed -i "s|pm.max_children =.*|pm.max_children = ${PHP_MAX_CHILDRENY}|" /etc/php7/php-fpm.d/www.conf && \
+    sed -i "s|pm.max_spare_servers =.*|pm.max_spare_servers = 40|" /etc/php7/php-fpm.d/www.conf && \
+    sed -i "s|pm.start_servers =.*|pm.start_servers = 20|" /etc/php7/php-fpm.d/www.conf && \
+    sed -i "s|pm.max_requests =.*|pm.max_requests = 1500|" /etc/php7/php-fpm.d/www.conf && \
+    sed -i "s|request_terminate_timeout =.*|request_terminate_timeoutt = 900|" /etc/php7/php-fpm.d/www.conf && \
+
     sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php7/php.ini && \
     sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /etc/php7/php.ini && \
     sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /etc/php7/php.ini && \
