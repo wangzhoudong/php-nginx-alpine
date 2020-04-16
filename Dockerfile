@@ -3,7 +3,7 @@ LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
       Description="Nginx 1.16 & PHP-FPM 7.3 based on Alpine Linux .  "
 
 ENV TIMEZONE Asia/Shanghai
-ENV PHP_MEMORY_LIMIT 128M
+ENV PHP_MEMORY_LIMIT 1024M
 ENV MAX_UPLOAD 50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
@@ -61,17 +61,6 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-phar && \
     curl -sS https://getcomposer.org/installer | \
     php7 -- --install-dir=/usr/bin --filename=composer && \
-    sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php7/php-fpm.conf && \
-    sed -i -e "s/listen\s*=\s*127.0.0.1:9000/listen = 9000/g" /etc/php7/php-fpm.d/www.conf && \
-    sed -i "s|;listen.backlog =.*|listen.backlog = 10000|" /etc/php7/php-fpm.d/www.conf && \
-    sed -i "s|pm.max_children =.*|pm.max_children = ${PHP_MAX_CHILDRENY}|" /etc/php7/php-fpm.d/www.conf && \
-    sed -i "s|pm.start_servers =.*|pm.start_servers = 10|" /etc/php7/php-fpm.d/www.conf && \
-    sed -i "s|pm.min_spare_servers =.*|pm.min_spare_servers = 10|" /etc/php7/php-fpm.d/www.conf && \
-    sed -i "s|pm.max_spare_servers =.*|pm.max_spare_servers = 40|" /etc/php7/php-fpm.d/www.conf && \
-.
-    sed -i "s|pm.max_requests =.*|pm.max_requests = 3000|" /etc/php7/php-fpm.d/www.conf && \
-    sed -i "s|request_terminate_timeout =.*|request_terminate_timeoutt = 900|" /etc/php7/php-fpm.d/www.conf && \
-
     sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php7/php.ini && \
     sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /etc/php7/php.ini && \
     sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /etc/php7/php.ini && \
@@ -97,6 +86,8 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/site-default.conf /etc/nginx/conf.d/default.conf
 
 # Configure PHP-FPM
+RUN rm -rf /etc/php7/php-fpm.d/www.conf
+COPY config/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
 COPY config/php.ini /etc/php7/conf.d/zzz_custom.ini
 
 # Configure supervisord
