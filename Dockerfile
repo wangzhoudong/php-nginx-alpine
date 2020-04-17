@@ -3,13 +3,18 @@ LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
       Description="Nginx 1.16 & PHP-FPM 7.3 based on Alpine Linux .  "
 
 ENV TIMEZONE Asia/Shanghai
-ENV PHP_MEMORY_LIMIT 1024M
+ENV PHP_MEMORY_LIMIT 256M
 ENV MAX_UPLOAD 50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
 ENV PHP_OPCACHE_ENABLE 1
 ENV PHP_OPCACHE_MEMORY 256
 ENV PHP_MAX_CHILDRENY 120
+ENV PPM_MAX_CHILDREN 256
+ENV PPM_START_SERVERS 10
+ENV PPM_MIN_SPARE_SERVERS 10
+ENV FPM_MAX_SPARE_SERVERS 30
+
 
 #安装基础服务
 RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
@@ -28,7 +33,6 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-intl \
     php7-gd \
     php7-imagick \
-    php7-xdebug \
     php7-tokenizer \
     php7-fileinfo \
     php7-mcrypt \
@@ -61,19 +65,6 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     php7-phar && \
     curl -sS https://getcomposer.org/installer | \
     php7 -- --install-dir=/usr/bin --filename=composer && \
-    sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php7/php.ini && \
-    sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /etc/php7/php.ini && \
-    sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /etc/php7/php.ini && \
-    sed -i "s|max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|" /etc/php7/php.ini && \
-    sed -i "s|post_max_size =.*|post_max_size = ${PHP_MAX_POST}|" /etc/php7/php.ini && \
-    sed -i "s|expose_php =.*|expose_php = Off|" /etc/php7/php.ini && \
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
-    sed -i "s/;opcache.enable=1/opcache.enable=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
-    sed -i "s/;opcache.enable_cli=0/opcache.enable_cli=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
-    sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=${PHP_OPCACHE_MEMORY}/" /etc/php7/php.ini && \
-    sed -i "s/;opcache.max_accelerated_files=.*/opcache.max_accelerated_files=1000000/" /etc/php7/php.ini && \
-    sed -i "s/;opcache.revalidate_freq=.*/opcache.revalidate_freq=240/" /etc/php7/php.ini && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
@@ -89,7 +80,18 @@ COPY config/site-default.conf /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/php7/php-fpm.d/www.conf
 COPY config/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
 COPY config/php.ini /etc/php7/conf.d/zzz_custom.ini
-
+RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php7/php.ini && \
+    sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /etc/php7/php.ini && \
+    sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /etc/php7/php.ini && \
+    sed -i "s|max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|" /etc/php7/php.ini && \
+    sed -i "s|post_max_size =.*|post_max_size = ${PHP_MAX_POST}|" /etc/php7/php.ini && \
+    sed -i "s|expose_php =.*|expose_php = Off|" /etc/php7/php.ini && \
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.enable=1/opcache.enable=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.enable_cli=0/opcache.enable_cli=${PHP_OPCACHE_ENABLE}/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=${PHP_OPCACHE_MEMORY}/" /etc/php7/php.ini && \
+    sed -i "s/;opcache.file_cache=.*/opcache.file_cache=\/tmp/" /etc/php7/php.ini
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
