@@ -1,4 +1,4 @@
-FROM alpine:3.11.2
+FROM alpine:3.12.0
 LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
       Description="Nginx 1.16 & PHP-FPM 7.3 based on Alpine Linux .  "
 
@@ -101,5 +101,8 @@ WORKDIR /var/www/html
 COPY src/ /var/www/html/
 
 EXPOSE 80 443
+
+ADD docker/init.sh /init.sh
+RUN chmod 755 /init.sh
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
