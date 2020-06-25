@@ -102,7 +102,7 @@ COPY src/ /var/www/html/
 
 EXPOSE 80 443
 
-ADD docker/init.sh /init.sh
+ADD srripts/init.sh /init.sh
 RUN chmod 755 /init.sh
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
