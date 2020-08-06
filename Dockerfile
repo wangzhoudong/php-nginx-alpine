@@ -5,7 +5,7 @@ LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
 ENV TIMEZONE Asia/Shanghai
 
 #安装基础服务
-RUN apk --no-cache add git supervisor nginx curl vim;
+RUN apk --no-cache add tzdata git supervisor nginx curl vim;
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
