@@ -16,7 +16,7 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets
+#RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets
 
 
 #RUN pecl install redis \
