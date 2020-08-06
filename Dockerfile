@@ -9,7 +9,7 @@ ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
 #安装基础服务
 RUN apk --no-cache add tzdata git supervisor nginx curl vim \
-          zlib zlib-dev m4 autoconf make gcc g++ linux-headers
+          zlib zlib-dev libpng libpng-dev m4 autoconf make gcc g++ linux-headers
 
 
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
