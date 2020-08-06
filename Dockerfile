@@ -33,7 +33,7 @@ RUN  apk del tzdata && \
 # Configure PHP-FPM
 RUN rm -rf /usr/local/etc/php-fpm.d/www.conf
 COPY config/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
 RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /usr/local/etc/php/php.ini && \
     sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /usr/local/etc/php/php.ini && \
