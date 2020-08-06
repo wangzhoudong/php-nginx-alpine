@@ -6,7 +6,7 @@ ENV TIMEZONE Asia/Shanghai
 
 #安装基础服务
 RUN apk --no-cache add tzdata git supervisor nginx curl vim \
-          zlib zlib-dev exim4 autoconf make gcc g++ linux-headers
+          zlib zlib-dev m4 autoconf make gcc g++ linux-headers
 
 
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
