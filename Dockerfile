@@ -12,14 +12,14 @@ RUN apk --no-cache add tzdata git supervisor nginx curl vim \
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
-RUN docker-php-ext-configure gd
-RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets
+#RUN docker-php-ext-configure gd
+#RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets
 
 
-RUN pecl install redis \
-    && pecl install swoole \
-    && pecl install xlswriter \
-    && docker-php-ext-enable redis swoole xlswriter
+#RUN pecl install redis \
+#    && pecl install swoole \
+#    && pecl install xlswriter \
+#    && docker-php-ext-enable redis swoole xlswriter
 
 ENV COMPOSER_HOME /root/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
