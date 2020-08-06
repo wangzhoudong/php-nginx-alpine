@@ -5,11 +5,26 @@ LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
 ENV TIMEZONE Asia/Shanghai
 
 #安装基础服务
-RUN apk --no-cache add tzdata git supervisor nginx curl vim;
+RUN apk --no-cache add tzdata zlib-dev git supervisor nginx curl vim;
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
+RUN docker-php-ext-configure gd
+RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets zip zlib
+
+
+RUN pecl install redis \
+    && pecl install swoole \
+    && pecl install xlswriter \
+    && docker-php-ext-enable redis swoole xlswriter
+
+ENV COMPOSER_HOME /root/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
+
+RUN  apk del tzdata && \
+      rm -rf /var/cache/apk/*
 # Configure nginx
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY config/nginx.conf /etc/nginx/nginx.conf
