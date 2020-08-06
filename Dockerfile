@@ -5,13 +5,29 @@ LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
 ENV TIMEZONE Asia/Shanghai
 
 #安装基础服务
-RUN apk --no-cache add tzdata zlib-dev git supervisor nginx curl vim;
+RUN apk --no-cache add tzdata git supervisor nginx curl vim \
+        libedit-dev \
+        libxml2-dev \
+        openssl-dev \
+        sqlite-dev \
+        icu-dev \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        imagemagick \
+        imagemagick-dev \
+        gettext-dev \
+        libwebp \
+        libwebp-dev \
+        libxpm-dev \
+        libzip-dev
+
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets zip zlib
+RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql gettext sockets zlib
 
 
 RUN pecl install redis \
