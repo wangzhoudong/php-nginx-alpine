@@ -7,16 +7,19 @@ ENV PHP_MEMORY_LIMIT 256M
 ENV MAX_UPLOAD 50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
+#使用阿里云的源防止超时
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 #安装基础服务
 RUN apk update && apk add tzdata git supervisor nginx curl vim \
-          zlib zlib-dev libpng libpng-dev m4 autoconf make gcc g++ linux-headers
+           zlib zlib-dev libpng libpng-dev m4 autoconf make gcc g++ linux-headers
 
 
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
 #RUN docker-php-ext-configure gd
-RUN docker-php-ext-install  pdo_mysql
+RUN docker-php-ext-install  pdo_mysql opcache
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
