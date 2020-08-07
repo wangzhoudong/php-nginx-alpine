@@ -18,8 +18,8 @@ RUN apk update && apk add tzdata git supervisor nginx curl vim \
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
-#RUN docker-php-ext-configure gd
-RUN docker-php-ext-install  pdo_mysql opcache
+RUN docker-php-ext-configure gd
+RUN docker-php-ext-install  gd pdo_mysql opcache
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
