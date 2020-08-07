@@ -13,15 +13,16 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 #安装基础服务
 RUN apk update && apk add tzdata git supervisor nginx curl vim \
            m4 autoconf make gcc g++ linux-headers \
-           imagemagick-dev libmcrypt-dev zlib-dev libpng-dev
+           imagemagick-dev libmcrypt-dev zlib-dev libpng-dev libzip-dev
+
 
 
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install  gd pdo_mysql opcache intl \
-    bcmath zip xmlrpc simplexml
+RUN docker-php-ext-install  gd pdo_mysql opcache bcmath
+#RUN docker-php-ext-install  zip
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
@@ -30,7 +31,7 @@ RUN pecl install redis \
     && pecl install xlswriter \
     && pecl install mcrypt \
     && pecl install imagick \
-    && docker-php-ext-enable redis swoole xlswriter mcrypt imagick
+    && docker-php-ext-enable redis swoole xlswriter
 
 
 ENV COMPOSER_HOME /root/composer
