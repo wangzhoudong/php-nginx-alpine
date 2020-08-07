@@ -12,7 +12,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 #安装基础服务
 RUN apk update && apk add tzdata git supervisor nginx curl vim \
-           zlib zlib-dev libpng libpng-dev m4 autoconf make gcc g++ linux-headers
+           m4 autoconf make gcc g++ linux-headers \
+           imagemagick-dev libmcrypt-dev zlib-dev libpng-dev
 
 
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
@@ -27,9 +28,10 @@ RUN docker-php-ext-install  gd pdo_mysql opcache intl \
 RUN pecl install redis \
     && pecl install swoole \
     && pecl install xlswriter \
-#    && pecl install mcrypt \
-#    && pecl install imagick \
-    && docker-php-ext-enable redis swoole xlswriter
+    && pecl install mcrypt \
+    && pecl install imagick \
+    && docker-php-ext-enable redis swoole xlswriter mcrypt imagick
+
 
 ENV COMPOSER_HOME /root/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
