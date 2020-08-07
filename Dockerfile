@@ -19,13 +19,16 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install  gd pdo_mysql opcache imagick
+RUN docker-php-ext-install  gd pdo_mysql opcache intl \
+    bcmath zip xmlrpc simplexml
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
 RUN pecl install redis \
     && pecl install swoole \
     && pecl install xlswriter \
+#    && pecl install mcrypt \
+#    && pecl install imagick \
     && docker-php-ext-enable redis swoole xlswriter
 
 ENV COMPOSER_HOME /root/composer
