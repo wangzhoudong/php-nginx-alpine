@@ -20,6 +20,20 @@ RUN apk update && apk add tzdata git supervisor nginx curl vim \
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
+# Configure PHP-FPM
+RUN rm -rf /usr/local/etc/php-fpm.d/www.conf
+COPY config/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /usr/local/etc/php/php.ini && \
+    sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /usr/local/etc/php/php.ini && \
+    sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /usr/local/etc/php/php.ini && \
+    sed -i "s|max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|" /usr/local/etc/php/php.ini && \
+    sed -i "s|post_max_size =.*|post_max_size = ${PHP_MAX_POST}|" /usr/local/etc/php/php.ini && \
+    sed -i "s|expose_php =.*|expose_php = Off|" /usr/local/etc/php/php.ini && \
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /usr/local/etc/php/php.ini && \
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /usr/local/etc/php/php.ini
+
+
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-install  gd pdo_mysql opcache bcmath
 RUN docker-php-ext-install  zip
@@ -40,19 +54,8 @@ ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
 RUN  apk del tzdata && \
       rm -rf /var/cache/apk/*
-# Configure PHP-FPM
-RUN rm -rf /usr/local/etc/php-fpm.d/www.conf
-COPY config/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
-RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
-RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /usr/local/etc/php/php.ini && \
-    sed -i "s|memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|" /usr/local/etc/php/php.ini && \
-    sed -i "s|upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|" /usr/local/etc/php/php.ini && \
-    sed -i "s|max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|" /usr/local/etc/php/php.ini && \
-    sed -i "s|post_max_size =.*|post_max_size = ${PHP_MAX_POST}|" /usr/local/etc/php/php.ini && \
-    sed -i "s|expose_php =.*|expose_php = Off|" /usr/local/etc/php/php.ini && \
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /usr/local/etc/php/php.ini && \
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /usr/local/etc/php/php.ini
+
 
 # Configure nginx
 RUN rm -rf /etc/nginx/conf.d/default.conf
