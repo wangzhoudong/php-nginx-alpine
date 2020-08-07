@@ -22,7 +22,7 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
 
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-install  gd pdo_mysql opcache bcmath
-#RUN docker-php-ext-install  zip
+RUN docker-php-ext-install  zip
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
