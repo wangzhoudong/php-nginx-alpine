@@ -35,8 +35,7 @@ RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /usr/local/etc/ph
 
 
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install  gd pdo_mysql opcache bcmath
-RUN docker-php-ext-install  zip
+RUN docker-php-ext-install  gd pdo_mysql opcache bcmath pcntl zip
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
