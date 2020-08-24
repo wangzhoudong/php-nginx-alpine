@@ -39,8 +39,8 @@ RUN docker-php-ext-install  gd pdo_mysql opcache bcmath pcntl zip
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 #兼容之前单独安装的环境
-ln -s /usr/local/bin/php /usr/bin/php7
-ln -s /usr/local/sbin/php-fpm /usr/sbin/php-fpm7
+RUN ln -s /usr/local/bin/php /usr/bin/php7
+RUN ln -s /usr/local/sbin/php-fpm /usr/sbin/php-fpm7
 
 RUN pecl install redis \
     && pecl install swoole \
