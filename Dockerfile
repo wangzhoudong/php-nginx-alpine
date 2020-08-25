@@ -16,8 +16,7 @@ RUN apk update && apk add tzdata git supervisor nginx curl vim \
                imagemagick-dev libmcrypt-dev zlib-dev libpng-dev libzip-dev libwebp-dev jpeg-dev libjpeg-turbo-dev freetype-dev
 
 
-
-RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
+RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone
 
 # Configure PHP-FPM
