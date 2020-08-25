@@ -44,7 +44,7 @@ RUN pecl install redis \
     && pecl install xlswriter \
     && pecl install mcrypt \
     && pecl install imagick \
-    && docker-php-ext-enable redis swoole xlswriter
+    && docker-php-ext-enable redis swoole xlswriter mcrypt imagick
 
 
 ENV COMPOSER_HOME /root/.composer
