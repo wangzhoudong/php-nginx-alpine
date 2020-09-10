@@ -65,6 +65,7 @@ COPY config/site-default.conf /etc/nginx/conf.d/default.conf
 
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY config/supervisord.conf /etc/supervisord.conf
 
 # Add application
 RUN mkdir -p /run/nginx
