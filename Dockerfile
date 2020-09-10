@@ -94,6 +94,7 @@ RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php7/php.ini
     sed -i "s/;opcache.file_cache=.*/opcache.file_cache=\/tmp/" /etc/php7/php.ini
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY config/supervisord.conf /etc/supervisord.conf
 
 # Add application
 RUN mkdir -p /var/www/html
