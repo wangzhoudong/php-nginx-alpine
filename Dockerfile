@@ -13,7 +13,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 #安装基础服务
 RUN apk update && apk add tzdata git supervisor nginx curl vim \
            m4 autoconf make gcc g++ linux-headers \
-               imagemagick-dev libmcrypt-dev zlib-dev libpng-dev libzip-dev libwebp-dev jpeg-dev libjpeg-turbo-dev freetype-dev
+               imagemagick-dev libmcrypt-dev zlib-dev libpng-dev libzip-dev libwebp-dev jpeg-dev libjpeg-turbo-dev freetype-dev \
+               libintl icu icu-dev
 
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
@@ -34,7 +35,7 @@ RUN sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /usr/local/etc/ph
 
 
 RUN docker-php-ext-configure gd --with-webp=/usr/include  --with-jpeg=/usr/include --with-freetype=/usr/include
-RUN docker-php-ext-install  gd pdo_mysql opcache bcmath pcntl zip
+RUN docker-php-ext-install  gd pdo_mysql opcache bcmath pcntl zip intl
 #RUN docker-php-ext-install  gd opcache pdo_mysql gettext sockets
 
 
