@@ -47,3 +47,13 @@ PHP_OPCACHE_MEMORY   设置opcache.memory_consumption  -e "PHP_OPCACHE_MEMORY=25
 ```
 docker run--name php -p 80:80 -v /local/php.ini:/usr/local/etc/php/php.ini -d dongen/php-nginx-alpine
 ```
+#运行实例
+```
+#安装 4G内存分配参数
+docker run--name php -p 80:80  -e "SYS_MEM_SIZE=4" -d dongen/php-nginx-alpine
+#手动设置参数FPM模式用静态分配内存
+docker run--name php -p 80:80  -e "FPM_PM=static"  -e "FPM_MAX_CHILDREN=100"  -d dongen/php-nginx-alpine
+#手动设置参数FPM模式用静态分配内存、设置PHP程序最大允许最大内存512G
+docker run--name php -p 80:80  -e "FPM_PM=static"  -e "FPM_MAX_CHILDREN=100" -e "PHP_MEMORY_LIMIT=512"  -d dongen/php-nginx-alpine
+
+```

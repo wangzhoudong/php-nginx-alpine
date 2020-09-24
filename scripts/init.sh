@@ -6,13 +6,8 @@ then
 else
 	memTotal=`awk '/MemTotal/{memtotal=$2}END{printf "%.0f",memtotal/1024/1024}' /proc/meminfo`;
 fi
-fpm_pm="dynamic";
- ##如果内存小于8G 用fpm 进程 用动态分配，如果大于等于8G用静态
-if [ "$memTotal"  -ge "8" ]; then
-  echo "内存大于8G";
-  fpm_pm="static"
-fi
 
+fpm_pm="dynamic";
 fpm_max_children=`expr $memTotal*20|bc`;
 fpm_start_servers=`expr $memTotal*2|bc`;
 fpm_min_spare_servers=`expr $memTotal*2|bc`;
