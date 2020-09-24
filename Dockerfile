@@ -7,6 +7,7 @@ ENV PHP_MEMORY_LIMIT 256M
 ENV MAX_UPLOAD 50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST 100M
+#ENV SYS_MEM_SIZE 3
 #使用阿里云的源防止超时
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
@@ -68,11 +69,17 @@ COPY config/site-default.conf /etc/nginx/conf.d/default.conf
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY config/supervisord.conf /etc/supervisord.conf
 
+COPY config/00-alpine.conf  /etc/sysctl.d/00-alpine.conf
+RUN cat /etc/sysctl.d/00-alpine.conf >> /etc/sysctl.conf
+
 # Add application
 RUN mkdir -p /run/nginx
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 COPY src/ /var/www/html/
+
+ADD scripts/init.sh /init.sh
+RUN chmod 755 /init.sh
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
