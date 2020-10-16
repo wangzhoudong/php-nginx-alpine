@@ -41,11 +41,12 @@ RUN docker-php-ext-install  gd pdo_mysql opcache bcmath pcntl zip intl
 
 
 RUN pecl install redis \
+    && pecl install mongodb \
     && pecl install swoole \
     && pecl install xlswriter \
     && pecl install mcrypt \
     && pecl install imagick \
-    && docker-php-ext-enable redis swoole xlswriter mcrypt imagick
+    && docker-php-ext-enable redis mongodb swoole xlswriter mcrypt imagick
 
 
 ENV COMPOSER_HOME /root/.composer
