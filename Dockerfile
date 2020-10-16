@@ -15,7 +15,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk update && apk add tzdata git supervisor nginx curl vim \
            m4 autoconf make gcc g++ linux-headers \
                imagemagick-dev libmcrypt-dev zlib-dev libpng-dev libzip-dev libwebp-dev jpeg-dev libjpeg-turbo-dev freetype-dev \
-               libintl icu icu-dev
+               libintl icu icu-dev openssl openssl-devel
 
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
