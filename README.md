@@ -20,7 +20,7 @@ Docker PHP-FPM 7.1 & Nginx 1.12 on Alpine Linux
 >  禁用opcache
 ```
 docker run -e "PHP_OPCACHE_ENABLE=0" --name php -p 80:80 -d dongen/php-nginx-alpine
-docker run -e "PHP_MEMORY_LIMIT=1024" --name php -p 80:80 -d 容器镜像
+docker run -e "PHP_MEMORY_LIMIT=1024M" --name php -p 80:80 -d 容器镜像
 ```
 #-e 参数 详情 :
 ```
@@ -33,7 +33,7 @@ FPM_MAX_SPARE_SERVERS 设置fpm 运行参数 如 -e "FPM_MAX_SPARE_SERVERS=2"
 FPM_MAX_REQUESTS 设置fpm 运行参数 如 -e "FPM_MAX_REQUESTS=2"
 
 TIMEZONE   设置时区 如 -e "TIMEZONE=Asia/Shanghai"
-PHP_MEMORY_LIMIT   设置运行内存 如 -e "PHP_MEMORY_LIMIT=512"
+PHP_MEMORY_LIMIT   设置运行内存 如 -e "PHP_MEMORY_LIMIT=512M"
 MAX_UPLOAD   设置php upload_max_filesize  -e "MAX_UPLOAD=50M"
 PHP_MAX_FILE_UPLOAD   设置php max_file_uploads  -e "PHP_MAX_FILE_UPLOAD=200"
 PHP_MAX_POST   设置php post_max_size  -e "PHP_MAX_FILE_UPLOAD=100M"
