@@ -15,7 +15,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk update && apk add tzdata git supervisor nginx curl vim \
            m4 autoconf make gcc g++ linux-headers \
                imagemagick-dev libmcrypt-dev zlib-dev libpng-dev libzip-dev libwebp-dev jpeg-dev libjpeg-turbo-dev freetype-dev \
-               libintl icu icu-dev openssl openssl-dev
+               libintl icu icu-dev oniguruma oniguruma-dev openssl openssl-dev
 
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
@@ -81,6 +81,14 @@ COPY src/ /var/www/html/
 
 ADD scripts/init.sh /init.sh
 RUN chmod 755 /init.sh
+
+# Add user group and user devops
+RUN cat /etc/passwd
+RUN addgroup -g 1000 devops
+RUN adduser -D -u 1000 -G devops devops
+RUN chown -R devops:devops /var/www
+RUN chown -R devops:devops /run
+
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
