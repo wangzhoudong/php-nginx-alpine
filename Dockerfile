@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.1-fpm-alpine
 LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
       Description="Nginx 1.16 & PHP-FPM 7.4 based on Alpine Linux .  "
 
