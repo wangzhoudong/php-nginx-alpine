@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine
+FROM php:7.4-fpm-alpine
 LABEL Maintainer="Wangzd <wangzhoudong@foxmail.com>" \
       Description="Nginx 1.16 & PHP-FPM 7.4 based on Alpine Linux .  "
 
@@ -42,16 +42,21 @@ RUN docker-php-ext-install  gd pdo_mysql opcache bcmath pcntl zip intl
 
 RUN pecl install redis \
     && pecl install mongodb \
-    && pecl install swoole \
     && pecl install xlswriter \
     && pecl install mcrypt \
     && pecl install imagick \
-    && docker-php-ext-enable redis mongodb swoole xlswriter mcrypt imagick
+    && docker-php-ext-enable redis mongodb xlswriter mcrypt imagick
 
 
 ENV COMPOSER_HOME /root/.composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
+
+# 安装ddtrace
+COPY datadog-php-tracer_aarch64.apk /usr/local/datadog-php-tracer_aarch64.apk
+RUN apk add /usr/local/datadog-php-tracer_aarch64.apk --allow-untrusted && \
+    rm /usr/local/datadog-php-tracer_aarch64.apk
+
 
 RUN  apk del tzdata && \
       rm -rf /var/cache/apk/*
